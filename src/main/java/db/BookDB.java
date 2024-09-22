@@ -29,9 +29,10 @@ class BookDB {
 
 
 
-    private boolean addBook(Book book){
+    public boolean addBook(Book book){
 
         if(books.contains(book)){
+            System.out.println("Contains");
             return false;
         }
 
@@ -43,14 +44,15 @@ public Optional<Book> findBook(String isbn){
 return books.parallelStream().filter(e->e.getIsbn().equals(isbn)).findFirst();
     }
 
-    public boolean  borrowBook(String isbn){
+    public Book  borrowBook(String isbn){
        Book book= findBook(isbn).orElseThrow(()->
            new BookNotFoundException());
        if(!book.isAvailable()){
            throw new BookNotAvailableException();
        }
            book.setAvailable(false);
-           return true;
+        System.out.println(book.toString());
+           return book;
 
 
     }
