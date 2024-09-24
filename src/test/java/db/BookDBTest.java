@@ -12,8 +12,10 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,18 +82,33 @@ public void addBookShoudReturnFalseWhenBookIsDuplicate(){
         @Test()
     @Order(6)
     public void borrowBookShoudChangeAvailablityFalse(){
-            Book book = bookDB.borrowBook("paya1234");
+            Book book = bookDB.borrowBook("paya1234").get();
             assertEquals(book.isAvailable(),false);
 
 
 
-    }       @Test()
+    }
+    @Test()
     @Order(7)
     public void borrowBookShoudOccursBookNotAvailableExceptionWhenBookBorrowed(){
         Assertions.assertThrows(BookNotAvailableException.class,
                 () ->      bookDB.borrowBook("paya1234")
         );
 
+    }
+    @Test()
+    @Order(8)
+    public void returnBookShoudChangeAvailablaityTrue(){
+        Book book = bookDB.returnBook("paya1234").get();
+        assertEquals(book.isAvailable(),true);
+
+    }
+    @Test()
+    @Order(9)
+    public void findAllBooksShoudEqualallObjectWithOutAddedBooks(){
+        List<Book> availableBooks = bookDB.getAvailableBooks();
+List<Book> stream=availableBooks.stream().filter(e->e.isAvailable()).collect(Collectors.toList());
+   assertEquals(stream.size(),availableBooks.size());
     }
 
 }
