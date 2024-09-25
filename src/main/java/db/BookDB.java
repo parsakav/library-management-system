@@ -54,22 +54,16 @@ return books.parallelStream().filter(e->e.getIsbn().equals(isbn)).findFirst();
            book.setAvailable(false);
         System.out.println(book.toString());
            return Optional.ofNullable(book);
-
-
-    }    public Optional<Book>  returnBook(String isbn){
+    }
+    public Optional<Book>  returnBook(String isbn){
        Book book= findBook(isbn).orElseThrow(()->
            new BookNotFoundException());
-
            book.setAvailable(true);
            return Optional.ofNullable(book);
-
-
     }
  public List<Book>  getAvailableBooks(){
       List<Book> books= this.books.parallelStream().filter(e->e.isAvailable()).collect(Collectors.toList());
-
       return books;
-
     }
 
 

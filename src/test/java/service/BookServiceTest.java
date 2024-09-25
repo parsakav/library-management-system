@@ -6,11 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -30,7 +27,9 @@ bookService = new BookServiceImpl(bookDB);
         when(bookDB.returnBook(Mockito.notNull(String.class))).thenReturn(Optional.of(book));
         when(bookDB.findBook(Mockito.notNull(String.class))).thenReturn(Optional.of(book));
         when(bookDB.getAvailableBooks()).thenReturn(Collections.singletonList(book));
-
+when(book.getTitle()).thenReturn("x");
+when(book.getAuthor()).thenReturn("x");
+when(book.getIsbn()).thenReturn("x");
 
 
    }
@@ -52,5 +51,35 @@ bookService = new BookServiceImpl(bookDB);
    public void addBookTestShoudReturnTrue(){
    assertTrue(bookService.addBook(book));
 
+   }   @Test
+   public void borrowBookShoudReturnAnObject(){
+   assertNotNull(bookService.borrowBook("1234"));
+
    }
+   @Test
+    public void borrowBookEmptyInputShoudOccurNullpointerException(){
+        Assertions.assertThrows(NullPointerException.class,()->{
+            bookService.borrowBook("");
+        });
+   }
+   @Test
+   public void borrowBookNullInputShoudOccurNullpointerException(){
+        Assertions.assertThrows(NullPointerException.class,()->{
+            bookService.borrowBook(null);
+        });
+   }  @Test
+   public void returenBookNullInputShoudOccurNullpointerException(){
+        Assertions.assertThrows(NullPointerException.class,()->{
+            bookService.returnBook(null);
+        });
+   }  @Test
+   public void returenBookEmptyInputShoudOccurNullpointerException(){
+        Assertions.assertThrows(NullPointerException.class,()->{
+            bookService.returnBook("");
+        });
+   }  @Test
+   public void returnBookShouldReturnAnObject(){
+        assertNotNull(bookService.returnBook("1234"));
+
+    }
 }
